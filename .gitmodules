@@ -4,3 +4,6 @@
 [submodule "backend/currency"]
 	path = backend/currency
 	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-currency.git
+[submodule "backend/freight"]
+	path = backend/freight
+	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-freight.git
