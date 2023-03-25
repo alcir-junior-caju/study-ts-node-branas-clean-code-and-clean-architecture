@@ -10,3 +10,6 @@
 [submodule "backend/checkout"]
 	path = backend/checkout
 	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-checkout.git
+[submodule "backend/catalog"]
+	path = backend/catalog
+	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-catalog.git
