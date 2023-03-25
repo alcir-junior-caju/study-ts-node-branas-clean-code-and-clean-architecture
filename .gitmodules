@@ -7,3 +7,6 @@
 [submodule "backend/freight"]
 	path = backend/freight
 	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-freight.git
+[submodule "backend/checkout"]
+	path = backend/checkout
+	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-checkout.git
