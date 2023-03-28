@@ -13,3 +13,6 @@
 [submodule "backend/catalog"]
 	path = backend/catalog
 	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-catalog.git
+[submodule "frontend/vue"]
+	path = frontend/vue
+	url = git@github.com:alcir-junior-caju/study-ts-vue-branas-clean-code-and-clean-architecture.git
