@@ -323,3 +323,78 @@ Uma arquitetura monolítica nem sempre é ruim, muito pelo contrário.
 
 Para projetos menores com equipes pequenas, principalmente no início da contrsução de um produto, é a arquitetura que dá mais resultado com o menor esforço e custo de infraestrutura.
 
+Modelagem Tática
+
+É utilizada dentro do Bounded Context para construir o domain model por meio de objetos de domínio.
+
+Nem sempre faz sentido adotar o Domain-Driven Design no nível tático, depende do negócio.
+
+Quando evitar Domain-Driven Design no nível tático
+- Exportação de dados;
+- ETLs (Extract, Transform, Load);
+- CRUDs;
+- Relatórios;
+- Integrações.
+
+Geralmente nesses tipos de projetos não existe um domínio estabelecido.
+
+Resumindo, quando não envolver a implementação de regras de negócio.
+
+Outro ponto de atenção é com a equipe, desenvolver orientado ao domínio requer mais experiência e esforço na modelagem.
+
+Objetos de Domínio:
+- Entities;
+- Value Objects;
+- Domain Services;
+- Aggregates;
+- Repositories.
+
+Entities
+
+Abstraem regras de negócio independentes, assim como no Clean Architecture, mas no DDD elas tem identidade e estado, podendo sofrer mutação ao longo do tempo.
+
+Exemplos:
+- Pedido: Pode ter mais ou menos itens, com o tempo é pago, entregue ou até mesmo cancelado;
+- Produto: Muda de preço com frequência e pode ser descontinuado;
+- Cliente: Eventualmente muda de endereço e telefone ou cancela a sua conta;
+- Cupom: Pode ter a sua validade alterada, eventualmente ser restrito a uma categoria de itens ou até mesmo ter uma determinada quantidade disponível para utilização.
+
+Como gerar identidade?
+- Manualmente: O próprio usuário pode gerar a identidade da entidade, nesse caso é mais complicado garantir a unicidade;
+- Aplicação: A aplicação pode utilizar um algoritmo para gerar a identidade como um gerador de UUID e GUID;
+- Banco de dados: O banco de dados por meio de uma sequence ou outro tipo de registro pode centralizar a geração da identidade;
+- Outro bounded context: A geração pode ser delegada para outro bounded context.
+
+Como comparar?
+
+A comparação entre entities se dá normalmente pela identidade, sem levar em consideração as características do objeto.
+
+Value Objects
+
+Também contém regras de negócio independente, no entato são identificados pelo seu valor, sendo imutáveis, ou seja, a sua mudança implica na sua substituição.
+
+Características
+- Mede, quantifica ou descreve uma coisa no domínio;
+- Seu valor é imutável;
+- É substituido quando seu valor mudar;
+- Pode ser comparado pelo valor que representa.
+
+Exemplos:
+- Código do pedido: Representa uma determinada regra de formação de número;
+- CPF: Garante que o número do documento é válido;
+- Dimensão: Abstrai a largura, altura, profundidade e peso de um item.
+
+Substituir por um inteiro
+
+Uma técnica para identificar uma Value Object é tentar substituílo por um tipo primitivo como uma string ou um número.
+
+Um Value Object é restrito a uma Entity ou pode ser utilizado em vários lugares?
+
+Domain Service
+
+Realiza tarefas específicas do domínio, não tendo estado. É indicado quando a operação que você quer executar não pertence a uma Entity ou a um Value Object.
+
+Exemplos
+- Calculadora de frete: É responsável por analisar os itens de um pedido e determinar quanto deve ser pago.
+- Calculadora de distância: Pegando duas  coordenadas retorna a distãncia.
+- Calculadora de estoque: Com base em várias entradas e saídas do estoque, calcula quantos itens estão disponíveis.
