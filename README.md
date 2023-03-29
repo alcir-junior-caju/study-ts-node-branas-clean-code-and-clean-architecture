@@ -398,3 +398,99 @@ Exemplos
 - Calculadora de frete: É responsável por analisar os itens de um pedido e determinar quanto deve ser pago.
 - Calculadora de distância: Pegando duas  coordenadas retorna a distãncia.
 - Calculadora de estoque: Com base em várias entradas e saídas do estoque, calcula quantos itens estão disponíveis.
+
+Utilize em operações que envolvam múltiplos objetos de domínio.
+
+Normalmente quando uma operação afeta múltiplos objetos de domínio, não pertence a nenhum deles, ela deve ser descrita em um domain service.
+
+Cuidado para não criar serviços procedurais, favorecendo um modelo anêmico.
+
+Como definir o relacionamento entre diferentes entities e value objects?
+
+A relação entre os objetos de domínio não é a mesma utilizada no banco de dados.
+
+Qual é o problema dessa abordagem?
+
+Grandes aggregates podem trazer desperdício de memória, além de sobrecarregar o banco de dados sem necessidade já que nem sempre a camada de aplicação estará interessada em utilizá-lo na íntegra.
+
+O desafio é balancear a preservação da inavariância com o comsumo de recursos.
+
+Aggregates
+
+Um aggregate é um agrupamento, ou cluster, de objetos de domínio como entities e values objects, estabelecendo o relacionamentos entre eles, tratado como uma unidade.
+
+Todo aggregate tem uma raíz, que é uma entity por meio da qual as operações sobre o aggregate são realizadas.
+
+Qual a solução? Quebrar em agregados.
+
+Boas práticas na criação de aggregates
+
+- Crie aggregates pequenos: Comece sempre com apenas uma entidade e cresça de acordo com as necessidades.
+- Referencie outros aggregates por identidade: Mantenha apenas a referência para outros aggregates, isso reduz a quantidade de memória e o esforço que o repositório faz para recuperá-los.
+
+Se estiver difícil de implementar o repositório, talvez o aggregate seja muito grande e possa ser separado.
+
+Um aggregate deve refletir a base de dados? Não.
+
+Isso faria o aggregate ser muito grande e consumir muita memória, tornando o repository mais complexo do que deveria.
+
+Um aggregate pode referenciar outros aggregates? Pode mas por identidade.
+
+Um aggregate pode ter apenas uma entity? Pode e quanto menor melhor. Mas cuidado, se tiver todo aggregate tem apenas um entity e um repository, temos um sistema anêmico.
+
+Uma entity que faz parte de um aggregate pode fazer parte de outro? Não faz muito sentido, talves afete o SRP e frente a umas mudança poderia quebrar um dos aggregates que faz parte.
+
+Repositories
+
+É uma extensão do domínio responsável por realizar a persistência dos aggregates, separando o domínio da infraestrutura.
+
+Qual a diferença do padrão Repository no Domain-Driven Design e o DAO?
+
+Um Repository lida a persitência de um aggregate inteiro, enquanto um DAO não tem uma granularidade definida.
+
+Somente parte do aggregate mudou, posso persistir apenas essa parte?
+
+A persistência é sempre realizada sobre o aggregate inteiro, no entanto a implementação do repository pode decidir quais registros o banco de dados devem ser atualizados.
+
+Posso obter apenas parte do aggregate? Isso significa que pode ser que o aggregate seja grande de mais e poderia ser quebrado em aggregates menores.
+
+Posso utilizar lazy loading dentro do aggregate? A preservação da invariância depende da integridade do aggregate, se parte dele não estiver populado pode perder o sentido.
+
+É possível utilizar diferentes filtros para obter um aggregate? Com certeza, na obtenção do aggregate diversos filtros podem ser utilizados.
+
+Posso gerar dados para a emissão de um relatório a partir de uma repository? A granularidade de um relatório é diferente da utilizada pelo aggregate e renderizar relatórios a perti de repositories pode ser excessivamente complexo, prefira a utilização de CQRS com a criação de consultas separadas.
+
+Application Service
+
+É a API do Bounded Context, expondo operações de negócio relevantes para os clientes da aplicação, muito similar ao Use Case do Clean Architecture.
+
+Atua como uma fachada para os clientes, que podem ser uma API Rest, GraphQL ou gRPC, uma interface gráfica, um CLI, uma fila entre outros.
+
+Faz a orquestração dos objetos de domínio e interage com a infraestrutura para fins de persistência, comunicação, integração, segurança entre outros.
+
+Mapeia DTOs para objetos de domínio e vice-versa, eventualmente utilizando recursos, como presenters para converter a saída para o formato mais adequado.
+
+Não devem existir regras de negócio dentro do Application Service, apenas orquestração.
+
+A camada de aplicação é naturalmente procedural enquanto a camada de domínio é favorecida pela orientação a objetos.
+
+Um Application Service pode chamar outro? Pode, mas isso vai criando uma depeência que quebra o SRP, tornando o código frágil, talvez o ideal seja publicar eventos de domínio.
+
+Somente o Application Service pode utilizar um repository diretamente? Quem é responsável por orquestrar os aggregates é o Application Service, por esse motivo o repository deve ser injetado nele e não nos aggregates.
+
+Podem existir várias operações em um Application Service? Sim, sem problemas, isso não afeta o design, utilizar uma Screaming Architecture, conforme descrito pelo Robert Martin em Clean Architecture não é uma obrigação.
+
+Um Application Service pode persistir vários aggregates na mesma operação? A consistência eventual pode trazer complexidade para o Appplication Service, nesse caso talvez uma abordagem orientada a eventos ou padrões como o Unit of Work possam ser utilizados.
+
+Qual é a diferença entre um Use Case e um Application Service? Muda apenas a enfase.
+
+Infrastruture Service
+
+Os detalhes de implementação de cada tecnologia ficam restritos aos serviços de infraestrutura, que ficam numa camada independente da aplicação.
+
+Modules
+
+Fornecem uma separação física para um conjunto de objetos de domínio, geralmente separado por bounded context, facilitando a organização em projetos grandes.
+
+Posso ter um monolito com múltiplos bounded contexts? Nem sempre você precisa de microserviços para separar os bounded contexts.
+
