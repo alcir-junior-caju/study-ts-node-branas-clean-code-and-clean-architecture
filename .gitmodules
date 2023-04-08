@@ -16,3 +16,6 @@
 [submodule "frontend/vue"]
 	path = frontend/vue
 	url = git@github.com:alcir-junior-caju/study-ts-vue-branas-clean-code-and-clean-architecture.git
+[submodule "backend/stock"]
+	path = backend/stock
+	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-stock.git
