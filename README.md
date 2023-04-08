@@ -518,3 +518,6 @@ Posso ter um monolito com múltiplos bounded contexts? Nem sempre você precisa 
 <p align="center">
     <img alt="Tela 06" src="_images/checkout-2.png" width="75%" style="margin: 15px 0" />
 </p>
+<p align="center">
+    <img alt="Tela 06" src="_images/frontend.png" width="75%" style="margin: 15px 0" />
+</p>
