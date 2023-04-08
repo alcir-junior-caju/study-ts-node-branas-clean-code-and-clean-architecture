@@ -22,3 +22,6 @@
 [submodule "backend/auth"]
 	path = backend/auth
 	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-auth.git
+[submodule "queue"]
+	path = queue
+	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-queue.git
