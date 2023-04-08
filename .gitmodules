@@ -19,3 +19,6 @@
 [submodule "backend/stock"]
 	path = backend/stock
 	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-stock.git
+[submodule "backend/auth"]
+	path = backend/auth
+	url = git@github.com:alcir-junior-caju/study-ts-node-branas-clean-code-and-clean-architecture-auth.git
