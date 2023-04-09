@@ -62,14 +62,7 @@ Para ter a segurança de refatorar um código, por onde começar?
     - Extrair um método;
     - Mover um método para outra classe
 
-#### SOLID Principles
-- S
-- O: Estar aberto para extensão e "fechado" para modificação
-- L
-- I
-- D
-
-#### SOLID Principles
+#### Testes
 Testes automatizados são a única forma que temos de garantir que o código funciona.
 
 Entender o porque se teve tempo de contratar uma equie de QA, criar uma rotina de testes, criar um documento com fluxo de testes, porque não foi criado testes automatizados?
@@ -494,6 +487,37 @@ Fornecem uma separação física para um conjunto de objetos de domínio, geralm
 
 Posso ter um monolito com múltiplos bounded contexts? Nem sempre você precisa de microserviços para separar os bounded contexts.
 
+#### Aulas 07
+
+No final dos anos 80, Bob Martin reuniu cerca de 9 princípios em um artigo, que na verdade foi uma resposta a outro artigo sobre orientação a objetos, que acabou servindo de base para os SOLID Principles.
+
+SOLID é a reunião de 5 princípios de desenvolvimento de software orientado a objetos que são a base para criar um design cacpas de tolerar mudanças ao longo do tempo, ser fácil de enteder e reusar.
+
+Básicamente ele indereça três coisas:
+
+- Rigidity: É difícil de mudar porque cada alteração afeta outras partes da aplicação, forçando outras alterações, causa longos builds, tempo de execução de testes e sensibilidade à mudança.
+- Fradility: Quando você faz uma mudança, quebra outras partes da aplicação, ou seja, existe um alto acoplamento, causa flahas inesperadas e difíceis de detectar.
+- Immobility: É difífil de reusar porque o código-fonte está emaranhando, dentro de outros lugares, deixando o sistema difífil de modularizar.
+#### SOLID Principles
+- Single Responsibility
+- Open/Closed
+- Liskov Substitution
+- Interface Segregation
+- Dependency Inversion
+
+Single Responsibility
+
+Devemos separar as coisas que mudam por motivos diferentes e nesse contexto a palavra responsabilidade significa motivo para mudar.
+
+Open/Closed
+
+Os componentes da arquitetura devem estar abertos para extenção e fechados para modificação.
+
+Fechado para mudança não siginifica que o código-fonte não pode mudar se for necessário.
+
+A maior parte dos Design Patterns como Abstract Factory, Builder, Proxy, Chain of Responsability, Iterator, State, Strategy e Template Method respeita o Open/Closed Principle por ser polimórfico.
+
+#### Aulas 08
 
 #### Telas do Sistema
 
