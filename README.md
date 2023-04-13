@@ -519,6 +519,220 @@ A maior parte dos Design Patterns como Abstract Factory, Builder, Proxy, Chain o
 
 #### Aulas 08
 
+Liskov Substitution
+
+Se S (beer, whisky e water) é subclasse de T (item) então objetos do tipo T (item) podem ser substituídos por objetos do tipo S (beer, whisky e water) sem quebrar o funcionamento do programa.
+
+Apenas definir uma subclasse não implica manter a coerência e preservar a invariância.
+
+A proposta da Barbara Liskov foi justamente garantir que as subclasses possam ser intercambiadas sem causar problemas durante a execução do programa.
+
+Pré-condições não devem ser fortalecidas.
+
+As operações definidas na subclasse devem aceitar no mínimo as mesmas entradas da superclasse, ou mais.
+
+Exemplo: Se a interface permite um parâmetro que é um número inteiro, caso uma instância limite a número negativos ela estará fortalecendo as pré-considções, causando possíveis incompatibilidades.
+
+Pós-condições não devem ser enfraquecidas.
+
+As operações definidas na subclasse devem produzir no mínimo o mesmo tipo de retorno da superclasse, ou algum que seja mais específico.
+
+Exemplo: Se a superclasse limita o retorno aos números positivos a subclasse não deve enfraquecer a regra e permitir qualquer número, positivo e nagativo, mas ela pode retornar os positivos até 10.
+
+A invariância deve ser preservada na subclasse.
+
+Tudo que é assumido como verdade na superclasse deve seguir sendo verdade na subclasse.
+
+Exemplo: Se na superclasse Pessoa a idade não pode ser negativa, uma subclasse deve seguir essa regra.
+
+Interface Segregation
+
+Uma subclasse não deveria implementar métodos que ela não usa, decomponha interfaces muito abrangentes em outras interfaces específicas.
+
+Este princípio lida com as desvantagens de utilizar interfaces muito grandes, que podem acabar perdendo a coesão.
+
+Evite interfaces muito grandes e extensas, prefira segmetá-las de acordo com as necessidades das subclasses.
+
+Dependency Inversion
+
+É a base do desacoplamento permitindo intercambiar depedências de acordo com a necessidade, facilitando os testes e a evolução com o passar do tempo.
+
+Event-Driven Architecture
+
+Uma arquitetura monolítica nem sempre é ruim, muito pelo contrário!
+
+Para projetos menores com equipes pequenas, principalmente no início da construção de um produto, é a arquitetura que dá mais resultado com o menor esforço e custo de infra estrutura.
+
+Muitas vezes somos levados a acreditar que microserviços são sempre perfeitos.
+
+Cuidado, somente separar os serviços está londe de ser o único objetivo.
+
+A pior coisa que podemos ter é uma arquitetura monolítica distribuída.
+- Alto acoplamento entre serviços.
+- Muitos pontos de falha.
+- Falta de Resiliência.
+
+E se o serviço receber um grande volume de requisições de uma hora para outra?
+- Baixa escalabilidade.
+- Possível desperdício de infraestrutura.
+
+Qual é a solução?
+
+Uma arquitetura orientada a eventos, ou Event-Driven Architecture, utiliza eventos para disparar e se comunicar com serviços desacoplados e é cada vez mais comum, principalmente em um ambiente de microservices.
+
+Os eventos são fatos que aconteceram no domínio e que podem ser um gatilho para a execução de regras de negócio.
+
+Eventos tem baixo acoplamento, são intercambiáveis e assíncronos.
+
+É a base para desacoplar aggregates dentro e fora de um bounded context.
+
+Exemplos:
+- Compra realizada (OrderPlaced).
+- Pagamento aprovado (PaymentApproved).
+- Nota fiscal emitida (InvoiceReady).
+- Entrega confirmada (DeliveryConfirmed).
+- Devolução solicitada (RefundRequested).
+- Produto avalidado (ProductReviewed).
+
+Quem é resposável por publicar um evento?
+
+A publicação de um evento é uma ação realizada por um use case ou application service, que interage com uma fila por meio de uma porta de saída.
+
+Os use cases ou application services agem como handlers, e são os reponsáveis por consumir os eventos que chegam por meio de uma porta de entrada.
+
+Utilizar eventos significa ter microservices?
+
+Os eventos podem ser publicados e consumidos dentro da mesma aplicação, ainda que seja monolítica.
+
+Adotar uma arquitetura orientada a envetos tem os seguintes benefícios.
+- Baixo acoplamento entre serviços.
+- Tolerância a falha.
+- Melhor controle sobre o débito técnico.
+- Disponibilidade / Escalabilidade mais alta.
+- Menos custos com infraestrutura.
+- Melhor entendimento sobre o que aconteceu, inclusive com a possibilidade de PITR.
+- Diversidade tecnológica.
+
+Adotar uma arquitetrura orientada a eventos tem os seguintes desafios.
+- Complexidade técnica mais alta.
+- Duplicação de eventos.
+- Falta de clareza no workflow.
+- Transações distrbuídas.
+- Dificuldade em tratar e diagnosticar erros.
+- Diversidade tecnológica.
+
+Qual a diferença entre comando e evento?
+
+Os comandos representam a intensão de um determinado usuário, podendo ser aceitos ou rejeitados dependendo da situação.
+
+Comando
+
+Os nomes dos comandos são sempre no imperativo.
+
+- PlaceOrder.
+- PayInvoice.
+- GenerateReport.
+- EnrollStudent.
+- UpdateCustomer.
+- UploadFile.
+
+Similar ao padrão Command
+- Promove o desacoplamento entre quem quer executar e quem é executado.
+- Um objeto que contém todos os dados necessário para abstrair uma determinada execução.
+- Pode ser executado de forma síncrona ou assíncrona.
+- É possível armazená-lo para executar futuramente.
+- Se for armazenamento ele pode servir de base para refazer ou desfazer  uma execução.
+
+O uso de filas é obrigatório?
+
+Nesses lugares, você é atendido imediatamente ou fica em uma fila?
+- Restaurante.
+- Cabelereiro.
+- Médico.
+- Pedir cancelamento de qualquer tipo de serviço por assinatura.
+
+Porque você fica em uma fila? Porque é necessária, pois não existem recursos suficientes disponíveis.
+
+Seria muito caro ter recursos para atender a todos de forma imediata.
+
+Em diversos monentos, por conta da ociosidade, eles seriam desperdiçados.
+
+Como fazer implementações de filas?
+
+Localmente por meio de um intermediário que implementa um mecanismo de noftificação.
+
+Os algoritmos geralmente são baseados nos padrões Observer e Mediator.
+
+Pela rede por meio de uma plataforma de mensageria.
+
+Alguns tipos de plataformas de mensageria.
+- RabbitMQ.
+- Kafka.
+- AWS SQS.
+- ActiveMQ.
+- Google Pub/Sub.
+- ZeroMQ.
+- Pulsar.
+
+É obrigatório o uso de uma plataforma de mensageria?
+
+Mensageria tem relação com resiliência, entre microservices com absoluta certeza é necessário mas dentro da mesma aplicação aumenta a complexidade técnica, uma questão que fica é: uma chamada a um método é resiliente?
+
+CQRS
+
+O CQRS, ou Command Query Responsibility Segregation, foi muito divulgado por Greg Young e envolve separar comandos que processam regras de negócio e realizam mutação de estado, das consultas que retornam apenas uma projeção sobre os dados armazenados.
+
+CQRS promove a separação entre o modelo de escrita e leitura.
+
+Comandos
+- Implementam regras de negócio.
+- Fazem mutação de dados, ou seja, executam tarefas que envolvem inserir, atualizar ou deletar informações no banco de dados.
+- Eventualmente podem ser colocados em uma fila e processados de forma assíncrona.
+- Emitem eventos que desencadeiam processos de negócio complexos.
+
+Porque isso é importante?
+
+Domain-Driven Design ou quaquer outro tipo de orientação ao domínio.
+
+Normalmente, a persistência dos aggregates é feita por meio dos repositories.
+
+A granularidade do repository é por aggregate, que deve ser o menor possível.
+
+Todos os dados precisam ser obtidos por meio de um repositório?
+
+Dependendo da consulta pode ser complexo obter dados de múltiplos aggregates.
+
+Lembre-se que a relação entre os aggregates é por identidade e dessa forma pode ser necessário obter diversos aggregates para consolidar as informações requeridas.
+
+Com isso fazer com que objetos de domínio e repositórios fiquem focados nas regras de negócio.
+
+Microserviços ou qualquer outro tipo de ambiente com dados distribuídos.
+
+Facilitar a obtenção de dados, de forma escalável, reduzindo o acoplamento síncrono entre os serviços.
+
+Como fazer a separação?
+
+Para utilzar CQRS precisamos obrigatoriamente separar os dados de escrita e de leitura?
+
+Calma, não necessáriamente. O principal motivo é performance, o modelo de persitência nem sempre é otimizado para consulta.
+
+Qual é o papel da normalização em um banco de dados relacional?
+- Reduzir a duplicação de dados entre diferentes tabelas, otimizando a ocupação de disco e também o risco de atualizar uma informação em uma tabela e esquecendo das outras.
+- Garantir a consitência nas operações realizadas sobre os dados.
+- Permite a combinação criando projeções especificadas dependendo das necessidades.
+
+A normalização tem mais relação com a escrita ou com a leitura dos dados?
+
+Não é recomendado renderizar relatórios ou estatísticas complexas a partir do banco de dados utilizado para a escrita, principalmente se ele for relacional.
+
+O banco de dados de escrita precisa ser relacional e o de leitura precisa ser NoSQL?
+
+Se o objetivo é armazenar múltiplas projeções não estruturadas, talvez seja melhor usar o NoSQL.
+
+Como manter o banco de leitura sincronizado?
+
+É possível atualizar ao longo da transação de escrita de forma síncrona ou mesmo criar um mecanismo mais resiliente e assíncrono, publicando enventos e consumindo em uma fila.
+
 #### Telas do Sistema
 
 <p align="center">
